@@ -1,5 +1,5 @@
 ***Mirsadikov Mirodil*** <br>
-[perfectogo](https://github.com/Mirsadikovv) 
+[Mirsadikovv](https://github.com/Mirsadikovv) 
 <br>
 &nbsp; <a href="https://t.me/Mirsadikovv" target="_blank" rel="noopener noreferrer"><img src="https://img.icons8.com/nolan/64/telegram-app.png" width="40"/></a>
 <br>
