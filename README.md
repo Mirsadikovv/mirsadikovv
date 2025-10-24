@@ -39,17 +39,6 @@ Software Engineer specializing in scalable systems and clean architecture.
 
 
 
----
-
-## Contribution Activity
-
-<div align="center">
-
-![](https://github-profile-3d-contrib.vercel.app/api?username=Mirsadikovv&theme=grey)
-
-![](https://raw.githubusercontent.com/Mirsadikovv/Mirsadikovv/output/github-contribution-grid-snake.svg)
-
-</div>
 
 ---
 
