@@ -29,16 +29,14 @@ Software Engineer specializing in scalable systems and clean architecture.
 
 <div align="center">
 
-<img width="49%" src="https://github-readme-stats.vercel.app/api?username=Mirsadikovv&show_icons=true&theme=default&hide_border=true&count_private=true&include_all_commits=true" />
-<img width="49%" src="https://github-readme-streak-stats.herokuapp.com/?user=Mirsadikovv&theme=default&hide_border=true" />
+<img width="49%" src="https://github-readme-stats.vercel.app/api?username=Mirsadikovv&show_icons=true&theme=transparent&hide_border=true&count_private=true&include_all_commits=true&title_color=333&text_color=555&icon_color=333" />
+<img width="49%" src="https://github-readme-streak-stats.herokuapp.com/?user=Mirsadikovv&theme=transparent&hide_border=true&ring=333&fire=333&currStreakLabel=333" />
 
-<img width="60%" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Mirsadikovv&layout=compact&theme=default&hide_border=true&langs_count=10" />
+<img width="60%" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Mirsadikovv&layout=compact&theme=transparent&hide_border=true&langs_count=8&title_color=333&text_color=555" />
 
 </div>
 
 ---
-
-## Contact
 
 <div align="center">
 
