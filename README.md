@@ -38,6 +38,18 @@ Software Engineer specializing in scalable systems and clean architecture.
 
 ---
 
+## Contribution Activity
+
+<div align="center">
+
+
+![](https://raw.githubusercontent.com/Mirsadikovv/Mirsadikovv/output/snake.svg)
+
+</div>
+
+---
+
+
 <div align="center">
 
 <a href="https://t.me/mirsadikovm" target="_blank">
