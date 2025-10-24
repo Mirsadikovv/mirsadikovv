@@ -65,7 +65,7 @@ Software Engineer specializing in scalable systems and clean architecture.
 
 </div>
 
----
+--- 
 
 <div align="center">
 
