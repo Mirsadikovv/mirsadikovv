@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huawei SMC + RSE8800A — API Reference</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f4f6f9;color:#1a1a2e;font-size:14px}
+a{color:#378ADD;text-decoration:none}
+
+.sw-wrap{max-width:1100px;margin:0 auto;padding:24px 16px 60px}
+
+.sw-header{background:#1a1f2e;color:#fff;padding:28px 32px;border-radius:12px 12px 0 0}
+.sw-header h1{font-size:22px;font-weight:600;margin-bottom:4px}
+.sw-header .sub{font-size:13px;opacity:0.55;margin-bottom:14px}
+.sw-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
+.badge-green{background:#1D9E75;color:#fff}
+.badge-blue{background:#378ADD;color:#fff}
+.badge-gray{background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8)}
+.badge-orange{background:#D85A30;color:#fff}
+
+.sw-body{background:#fff;border:1px solid #e2e5ea;border-top:none;border-radius:0 0 12px 12px;overflow:hidden}
+
+.tag-section{border-bottom:1px solid #e2e5ea}
+.tag-section:last-child{border-bottom:none}
+.tag-header{padding:14px 24px;font-size:13px;font-weight:600;color:#444;background:#f8f9fb;cursor:pointer;display:flex;align-items:center;gap:10px;user-select:none;border-bottom:1px solid #e2e5ea}
+.tag-header:hover{background:#f0f2f5}
+.tag-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-auth{background:#D85A30}
+.dot-smc{background:#378ADD}
+.dot-live{background:#1D9E75}
+.dot-rse{background:#7F77DD}
+.tag-desc{font-size:12px;color:#888;font-weight:400}
+.tag-chevron{margin-left:auto;font-size:11px;color:#aaa;transition:transform 0.2s}
+.tag-chevron.open{transform:rotate(90deg)}
+.tag-body{display:none}
+.tag-body.open{display:block}
+
+.endpoint{border-top:1px solid #eef0f3;overflow:hidden}
+.ep-bar{display:flex;align-items:center;gap:10px;padding:12px 24px;cursor:pointer;user-select:none;background:#fff}
+.ep-bar:hover{background:#fafbfc}
+.method{font-size:11px;font-weight:700;padding:4px 10px;border-radius:5px;min-width:58px;text-align:center;letter-spacing:0.4px;flex-shrink:0}
+.m-post{background:#EAF3DE;color:#27500A}
+.m-get{background:#E6F1FB;color:#0C447C}
+.m-delete{background:#FCEBEB;color:#791F1F}
+.m-patch{background:#FAEEDA;color:#633806}
+.m-ws{background:#EEEDFE;color:#3C3489}
+.ep-path{font-size:13px;font-weight:500;font-family:'SF Mono','Fira Code',monospace;color:#1a1a2e}
+.ep-summary{font-size:12px;color:#888;margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px}
+.new-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#FAECE7;color:#993C1D;border:1px solid #F0997B;flex-shrink:0}
+.ep-chevron{font-size:10px;color:#bbb;flex-shrink:0;transition:transform 0.2s;margin-left:8px}
+.ep-chevron.open{transform:rotate(90deg)}
+
+.ep-detail{display:none;padding:20px 28px 24px;background:#fafbfc;border-top:1px solid #eef0f3}
+.ep-detail.open{display:block}
+.ep-desc{font-size:13px;color:#555;margin-bottom:16px;line-height:1.7}
+code{font-family:'SF Mono','Fira Code',monospace;font-size:12px;background:#f0f2f5;padding:1px 5px;border-radius:3px;color:#D85A30}
+.info-note{font-size:12px;padding:10px 14px;background:#EBF4FE;color:#0C447C;border-radius:6px;margin-bottom:14px;display:flex;gap:8px;align-items:flex-start;line-height:1.6;border-left:3px solid #378ADD}
+.info-note svg{flex-shrink:0;margin-top:1px}
+
+.section-label{font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:0.8px;margin:16px 0 8px}
+.section-label:first-child{margin-top:0}
+
+.code-block{background:#1e2130;color:#cdd6f4;border-radius:8px;padding:14px 16px;font-family:'SF Mono','Fira Code',monospace;font-size:12px;line-height:1.8;white-space:pre;overflow-x:auto;position:relative}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,0.1);border:none;color:#aaa;font-size:11px;padding:4px 10px;border-radius:4px;cursor:pointer;font-family:inherit}
+.copy-btn:hover{background:rgba(255,255,255,0.18);color:#fff}
+
+.params-table{width:100%;border-collapse:collapse;font-size:12px;background:#fff;border-radius:6px;overflow:hidden;border:1px solid #e2e5ea}
+.params-table th{text-align:left;color:#888;font-weight:600;padding:8px 12px;background:#f8f9fb;border-bottom:1px solid #e2e5ea;font-size:11px;text-transform:uppercase;letter-spacing:0.4px}
+.params-table td{padding:9px 12px;border-bottom:1px solid #f0f2f5;vertical-align:top;color:#333}
+.params-table tr:last-child td{border-bottom:none}
+.params-table tr:hover td{background:#fafbfc}
+.req{color:#A32D2D;font-weight:700}
+.type-pill{font-size:10px;padding:2px 7px;border-radius:4px;background:#f0f2f5;color:#555;font-family:'SF Mono','Fira Code',monospace;border:1px solid #e2e5ea}
+
+.resp-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.resp-code{font-size:11px;padding:3px 10px;border-radius:4px;font-weight:600;cursor:default}
+.r200{background:#EAF3DE;color:#27500A;border:1px solid #C0DD97}
+.r204{background:#EAF3DE;color:#27500A;border:1px solid #C0DD97}
+.r400{background:#FAEEDA;color:#633806;border:1px solid #FAC775}
+.r401{background:#FCEBEB;color:#791F1F;border:1px solid #F7C1C1}
+.r404{background:#FCEBEB;color:#791F1F;border:1px solid #F7C1C1}
+
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row2-label{font-size:11px;color:#aaa;margin-bottom:6px;font-weight:600}
+@media(max-width:600px){.row2{grid-template-columns:1fr}.ep-summary{display:none}}
+
+.json-key{color:#89b4fa}
+.json-str{color:#a6e3a1}
+.json-num{color:#fab387}
+.json-bool{color:#cba6f7}
+.json-null{color:#f38ba8}
+.json-comment{color:#585b70;font-style:italic}
+</style>
+</head>
+<body>
+<div class="sw-wrap">
+
+<div class="sw-header">
+  <h1>Huawei SMC + RSE8800A — API Reference</h1>
+  <p class="sub">Conference management · Live streaming · Recording · Web join</p>
+  <div class="sw-meta">
+    <span class="badge badge-green">OAS 3.0</span>
+    <span class="badge badge-blue">SMC 24.1</span>
+    <span class="badge badge-blue">RSE 21.0</span>
+    <span class="badge badge-orange">6 новых API</span>
+    <span class="badge badge-gray">Base URL: https://smc.sud.uz</span>
+  </div>
+</div>
+
+<div class="sw-body">
+
+<!-- ══════ AUTH ══════ -->
+<div class="tag-section">
+  <div class="tag-header" onclick="toggleTag(this)">
+    <div class="tag-dot dot-auth"></div>
+    Authentication
+    <span class="tag-desc">— единый вход, JWT токен</span>
+    <span class="tag-chevron open">▶</span>
+  </div>
+  <div class="tag-body open">
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-post">POST</span>
+        <span class="ep-path">/login</span>
+        <span class="new-badge">NEW</span>
+        <span class="ep-summary">Единый вход для SMC и RSE</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <div class="info-note">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#378ADD" stroke-width="1.5"/><line x1="8" y1="7" x2="8" y2="11" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r="0.8" fill="#378ADD"/></svg>
+          Новый API. Заменяет <code>GET /conf-portal/tokens</code> и <code>GET /sys-portal/tokens</code>. Возвращает JWT, который используется для всех запросов к SMC и RSE. Токен не инвалидируется при входе с другого устройства — параллельные сессии работают одновременно.
+        </div>
+        <p class="ep-desc">Единая точка входа в систему. После получения токена все последующие запросы передают его через заголовок <code>Authorization: Bearer {token}</code>.</p>
+
+        <div class="section-label">Request body</div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button><span class="json-key">{</span>
+  <span class="json-key">"login"</span>: <span class="json-str">"api_operator"</span>,
+  <span class="json-key">"password"</span>: <span class="json-str">"your_password"</span>
+<span class="json-key">}</span></div>
+
+        <div class="section-label">Parameters</div>
+        <table class="params-table">
+          <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td>login</td><td><span class="type-pill">string</span></td><td><span class="req">*</span></td><td>Логин пользователя</td></tr>
+          <tr><td>password</td><td><span class="type-pill">string</span></td><td><span class="req">*</span></td><td>Пароль пользователя</td></tr>
+        </table>
+
+        <div class="section-label">Responses</div>
+        <div class="resp-row">
+          <span class="resp-code r200">200 OK</span>
+          <span class="resp-code r401">401 Unauthorized</span>
+        </div>
+        <div class="row2">
+          <div>
+            <div class="row2-label">200 OK</div>
+            <div class="code-block"><span class="json-key">{</span>
+  <span class="json-key">"token"</span>: <span class="json-str">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNGU4YTEyMyIsInVzZXJUeXBlIjoib3BlcmF0b3IiLCJleHAiOjE3MzA5OTk2MDB9.abc123"</span>,
+  <span class="json-key">"userId"</span>: <span class="json-str">"d4e8a123-4b5c-6d7e-8f9a-0b1c2d3e4f5a"</span>,
+  <span class="json-key">"userType"</span>: <span class="json-str">"operator"</span>,
+  <span class="json-key">"expiresAt"</span>: <span class="json-str">"2024-11-09T10:00:00Z"</span>
+<span class="json-key">}</span></div>
+          </div>
+          <div>
+            <div class="row2-label">401 Unauthorized</div>
+            <div class="code-block"><span class="json-key">{</span>
+  <span class="json-key">"code"</span>: <span class="json-num">401</span>,
+  <span class="json-key">"message"</span>: <span class="json-str">"Invalid credentials"</span>
+<span class="json-key">}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════ CONFERENCE MANAGEMENT ══════ -->
+<div class="tag-section">
+  <div class="tag-header" onclick="toggleTag(this)">
+    <div class="tag-dot dot-smc"></div>
+    Conference management
+    <span class="tag-desc">— создание, управление, участники</span>
+    <span class="tag-chevron open">▶</span>
+  </div>
+  <div class="tag-body open">
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-post">POST</span>
+        <span class="ep-path">/conf-portal/conferences</span>
+        <span class="ep-summary">Создать конференцию</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <p class="ep-desc">Создаёт конференцию в SMC. При <code>enableLiveBroadcast: true</code> в ответе возвращается <code>liveAddress</code>. Поля <code>guestPassword</code> и <code>chairmanPassword</code> возвращаются в ответе — необходимо сохранить для веб-подключения участников.</p>
+
+        <div class="section-label">Request body</div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button><span class="json-key">{</span>
+  <span class="json-key">"conference"</span>: <span class="json-key">{</span>
+    <span class="json-key">"subject"</span>: <span class="json-str">"Судебное заседание №2024-1234"</span>,
+    <span class="json-key">"chairmanPassword"</span>: <span class="json-str">"123456"</span>,
+    <span class="json-key">"guestPassword"</span>: <span class="json-str">"654321"</span>,
+    <span class="json-key">"conferenceTimeType"</span>: <span class="json-str">"INSTANT_CONFERENCE"</span>,
+    <span class="json-key">"scheduleStartTime"</span>: <span class="json-str">"2024-11-08T10:00:00Z"</span>,
+    <span class="json-key">"duration"</span>: <span class="json-num">120</span>,
+    <span class="json-key">"vmrNumber"</span>: <span class="json-str">""</span>
+  <span class="json-key">}</span>,
+  <span class="json-key">"streamService"</span>: <span class="json-key">{</span>
+    <span class="json-key">"supportLive"</span>: <span class="json-bool">true</span>,
+    <span class="json-key">"supportRecord"</span>: <span class="json-bool">true</span>,
+    <span class="json-key">"autoRecord"</span>: <span class="json-bool">true</span>,
+    <span class="json-key">"audioRecord"</span>: <span class="json-bool">false</span>
+  <span class="json-key">}</span>,
+  <span class="json-key">"multiConferenceService"</span>: <span class="json-key">{</span>
+    <span class="json-key">"conferenceCapabilitySetting"</span>: <span class="json-key">{</span>
+      <span class="json-key">"type"</span>: <span class="json-str">"AVC"</span>,
+      <span class="json-key">"rate"</span>: <span class="json-num">1920</span>,
+      <span class="json-key">"enableRecord"</span>: <span class="json-bool">true</span>,
+      <span class="json-key">"enableLiveBroadcast"</span>: <span class="json-bool">true</span>,
+      <span class="json-key">"autoRecord"</span>: <span class="json-bool">true</span>,
+      <span class="json-key">"audioProtocol"</span>: <span class="json-str">"AAC_LD_S"</span>,
+      <span class="json-key">"videoProtocol"</span>: <span class="json-str">"H264_HP"</span>,
+      <span class="json-key">"videoResolution"</span>: <span class="json-str">"MPI_720P"</span>
+    <span class="json-key">}</span>,
+    <span class="json-key">"conferencePolicySetting"</span>: <span class="json-key">{</span>
+      <span class="json-key">"autoMute"</span>: <span class="json-bool">true</span>,
+      <span class="json-key">"autoExtend"</span>: <span class="json-bool">true</span>,
+      <span class="json-key">"maxParticipantNum"</span>: <span class="json-num">500</span>,
+      <span class="json-key">"enableUnmuteByGuest"</span>: <span class="json-bool">true</span>
+    <span class="json-key">}</span>
+  <span class="json-key">}</span>
+<span class="json-key">}</span></div>
+
+        <div class="section-label">Responses</div>
+        <div class="resp-row">
+          <span class="resp-code r200">200 OK</span>
+          <span class="resp-code r400">400 Bad Request</span>
+          <span class="resp-code r401">401 Unauthorized</span>
+        </div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button><span class="json-key">{</span>
+  <span class="json-key">"conference"</span>: <span class="json-key">{</span>
+    <span class="json-key">"id"</span>: <span class="json-str">"3c33b694-ee6a-4034-8715-2746d818b352"</span>,
+    <span class="json-key">"subject"</span>: <span class="json-str">"Судебное заседание №2024-1234"</span>,
+    <span class="json-key">"chairmanPassword"</span>: <span class="json-str">"123456"</span>,
+    <span class="json-key">"guestPassword"</span>: <span class="json-str">"654321"</span>,
+    <span class="json-key">"active"</span>: <span class="json-bool">true</span>,
+    <span class="json-key">"scheduleStartTime"</span>: <span class="json-str">"2024-11-08T10:00:00Z"</span>
+  <span class="json-key">}</span>,
+  <span class="json-key">"streamService"</span>: <span class="json-key">{</span>
+    <span class="json-key">"supportLive"</span>: <span class="json-bool">true</span>,
+    <span class="json-key">"liveAddress"</span>: <span class="json-str">"https://rse1.sud.uz/live/3c33b694-.../stream.m3u8"</span>
+  <span class="json-key">}</span>
+<span class="json-key">}</span></div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-get">GET</span>
+        <span class="ep-path">/online/conferences/{conferenceId}/detail</span>
+        <span class="ep-summary">Детали активной конференции</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <p class="ep-desc">Возвращает текущее состояние активной конференции: статус записи, трансляции, количество участников онлайн.</p>
+        <div class="section-label">Path parameters</div>
+        <table class="params-table">
+          <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td>conferenceId</td><td><span class="type-pill">string (uuid)</span></td><td><span class="req">*</span></td><td>ID конференции в SMC</td></tr>
+        </table>
+        <div class="section-label">Response 200</div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button><span class="json-key">{</span>
+  <span class="json-key">"conferenceUiParam"</span>: <span class="json-key">{</span>
+    <span class="json-key">"id"</span>: <span class="json-str">"3c33b694-ee6a-4034-8715-2746d818b352"</span>,
+    <span class="json-key">"subject"</span>: <span class="json-str">"Судебное заседание №2024-1234"</span>,
+    <span class="json-key">"onlineParticipantNum"</span>: <span class="json-num">3</span>,
+    <span class="json-key">"totalParticipantNum"</span>: <span class="json-num">5</span>,
+    <span class="json-key">"duration"</span>: <span class="json-num">120</span>
+  <span class="json-key">}</span>,
+  <span class="json-key">"conferenceState"</span>: <span class="json-key">{</span>
+    <span class="json-key">"recording"</span>: <span class="json-bool">true</span>,
+    <span class="json-key">"living"</span>: <span class="json-bool">true</span>,
+    <span class="json-key">"isMute"</span>: <span class="json-bool">false</span>,
+    <span class="json-key">"lock"</span>: <span class="json-bool">false</span>
+  <span class="json-key">}</span>
+<span class="json-key">}</span></div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-post">POST</span>
+        <span class="ep-path">/online/conferences/{conferenceId}/participants</span>
+        <span class="ep-summary">Добавить терминал (переговорную комнату)</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <p class="ep-desc">Добавляет физический терминал к активной конференции. SMC автоматически звонит на указанный URI терминала.</p>
+        <div class="section-label">Request body</div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button>[
+  <span class="json-key">{</span>
+    <span class="json-key">"entryUuid"</span>: <span class="json-str">"76ecd26d-897e-4637-8b49-99ec59a25064"</span>,
+    <span class="json-key">"name"</span>: <span class="json-str">"Зал №3 — Суд Ташкента"</span>,
+    <span class="json-key">"uri"</span>: <span class="json-str">"9482634001"</span>,
+    <span class="json-key">"terminalType"</span>: <span class="json-str">"TE"</span>,
+    <span class="json-key">"rate"</span>: <span class="json-str">"1920"</span>,
+    <span class="json-key">"participantSourceType"</span>: <span class="json-str">"NORMAL"</span>,
+    <span class="json-key">"mainParticipant"</span>: <span class="json-bool">false</span>
+  <span class="json-key">}</span>
+]</div>
+        <div class="section-label">Responses</div>
+        <div class="resp-row">
+          <span class="resp-code r200">200 OK</span>
+          <span class="resp-code r400">400 Bad Request</span>
+          <span class="resp-code r404">404 Conference not found</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-post">POST</span>
+        <span class="ep-path">/online/conferences/{conferenceId}/attendees</span>
+        <span class="ep-summary">Добавить слушателя из адресной книги</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <p class="ep-desc">Добавляет слушателя (пользователя из адресной книги SMC) к активной конференции. Слушатель не имеет прав председателя.</p>
+        <div class="section-label">Request body</div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button>[
+  <span class="json-key">{</span>
+    <span class="json-key">"name"</span>: <span class="json-str">"Иванов Иван"</span>,
+    <span class="json-key">"account"</span>: <span class="json-str">"ivanov@sud.uz"</span>,
+    <span class="json-key">"uri"</span>: <span class="json-str">"sip:ivanov@smc.sud.uz"</span>,
+    <span class="json-key">"organizationName"</span>: <span class="json-str">"Суд Ташкентской области"</span>,
+    <span class="json-key">"rate"</span>: <span class="json-num">1920</span>
+  <span class="json-key">}</span>
+]</div>
+        <div class="section-label">Responses</div>
+        <div class="resp-row">
+          <span class="resp-code r200">200 OK</span>
+          <span class="resp-code r400">400 Bad Request</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-get">GET</span>
+        <span class="ep-path">/online/conferences/{conferenceId}/participants</span>
+        <span class="ep-summary">Список участников и их статус</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <p class="ep-desc">Возвращает всех участников активной конференции с текущим статусом подключения.</p>
+        <div class="section-label">Response 200</div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button><span class="json-key">{</span>
+  <span class="json-key">"participants"</span>: [
+    <span class="json-key">{</span>
+      <span class="json-key">"id"</span>: <span class="json-str">"709a83c0-8ec6-4dca-8146-58277a1d3557"</span>,
+      <span class="json-key">"name"</span>: <span class="json-str">"Зал №3 — Суд Ташкента"</span>,
+      <span class="json-key">"uri"</span>: <span class="json-str">"9482634001"</span>,
+      <span class="json-key">"state"</span>: <span class="json-str">"ONLINE"</span>,
+      <span class="json-key">"audio"</span>: <span class="json-bool">true</span>,
+      <span class="json-key">"video"</span>: <span class="json-bool">true</span>
+    <span class="json-key">}</span>,
+    <span class="json-key">{</span>
+      <span class="json-key">"id"</span>: <span class="json-str">"b9a44039-11ab-423f-99f6-c9f6aa744b34"</span>,
+      <span class="json-key">"name"</span>: <span class="json-str">"Иванов Иван"</span>,
+      <span class="json-key">"uri"</span>: <span class="json-str">"sip:ivanov@smc.sud.uz"</span>,
+      <span class="json-key">"state"</span>: <span class="json-str">"CALLING"</span>,
+      <span class="json-key">"audio"</span>: <span class="json-bool">true</span>,
+      <span class="json-key">"video"</span>: <span class="json-bool">false</span>
+    <span class="json-key">}</span>
+  ]
+<span class="json-key">}</span></div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-patch">PATCH</span>
+        <span class="ep-path">/online/conferences/{conferenceId}/status</span>
+        <span class="ep-summary">Управление — запись, mute, трансляция</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <p class="ep-desc">Универсальный endpoint управления конференцией: старт/стоп записи, включение трансляции, mute всех участников, смена режима.</p>
+        <div class="section-label">Request body</div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button><span class="json-key">{</span>
+  <span class="json-key">"isMute"</span>: <span class="json-bool">true</span>,
+  <span class="json-key">"recordOp"</span>: <span class="json-key">{</span>
+    <span class="json-key">"recordOpType"</span>: <span class="json-str">"START"</span>, <span class="json-comment">// START | PAUSE | STOP</span>
+    <span class="json-key">"live"</span>: <span class="json-bool">true</span>,
+    <span class="json-key">"audioRecord"</span>: <span class="json-bool">false</span>
+  <span class="json-key">}</span>
+<span class="json-key">}</span></div>
+        <div class="section-label">Responses</div>
+        <div class="resp-row">
+          <span class="resp-code r204">204 No Content</span>
+          <span class="resp-code r400">400 Bad Request</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-delete">DELETE</span>
+        <span class="ep-path">/online/conferences/{conferenceId}</span>
+        <span class="ep-summary">Завершить конференцию</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <p class="ep-desc">Завершает активную конференцию. После завершения запись обрабатывается на RSE асинхронно — используйте <code>/recordAddress</code> для получения ссылок на файлы.</p>
+        <div class="section-label">Responses</div>
+        <div class="resp-row">
+          <span class="resp-code r204">204 No Content</span>
+          <span class="resp-code r404">404 Conference not found</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════ LIVE STREAMING ══════ -->
+<div class="tag-section">
+  <div class="tag-header" onclick="toggleTag(this)">
+    <div class="tag-dot dot-live"></div>
+    Live streaming & Web join
+    <span class="tag-desc">— прямая трансляция и браузерное подключение</span>
+    <span class="tag-chevron open">▶</span>
+  </div>
+  <div class="tag-body open">
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-get">GET</span>
+        <span class="ep-path">/live/conference/{conferenceId}</span>
+        <span class="new-badge">NEW</span>
+        <span class="ep-summary">HLS поток активной конференции</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <div class="info-note">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#378ADD" stroke-width="1.5"/><line x1="8" y1="7" x2="8" y2="11" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r="0.8" fill="#378ADD"/></svg>
+          Новый API. Заменяет <code>liveAddress</code> из <code>GET /conferences/record/{id}</code> который возвращал ссылку на веб-страницу Huawei. Теперь возвращает чистый HLS поток без редиректа.
+        </div>
+        <p class="ep-desc">Возвращает HLS-плейлист (<code>.m3u8</code>) прямой трансляции активной конференции. Может быть передан напрямую в HTML5 video player или <code>hls.js</code> без дополнительной авторизации на клиентской стороне.</p>
+        <div class="section-label">Path parameters</div>
+        <table class="params-table">
+          <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td>conferenceId</td><td><span class="type-pill">string (uuid)</span></td><td><span class="req">*</span></td><td>ID активной конференции</td></tr>
+        </table>
+        <div class="section-label">Response 200 — application/vnd.apple.mpegurl</div>
+        <div class="code-block"><span class="json-comment">#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-TARGETDURATION:4
+#EXT-X-MEDIA-SEQUENCE:0
+#EXTINF:4.000,</span>
+output_0.ts
+<span class="json-comment">#EXTINF:4.000,</span>
+output_1.ts
+<span class="json-comment">#EXTINF:4.000,</span>
+output_2.ts</div>
+        <div class="section-label">Responses</div>
+        <div class="resp-row">
+          <span class="resp-code r200">200 OK</span>
+          <span class="resp-code r404">404 Conference not active</span>
+          <span class="resp-code r401">401 Unauthorized</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-get">GET</span>
+        <span class="ep-path">/live/record/{segmentName}.ts</span>
+        <span class="new-badge">NEW</span>
+        <span class="ep-summary">Сегмент HLS потока</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <div class="info-note">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#378ADD" stroke-width="1.5"/><line x1="8" y1="7" x2="8" y2="11" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r="0.8" fill="#378ADD"/></svg>
+          Новый API. Авторизация по JWT в заголовке — вместо cookie RSE сессии которая привязана к домену RSE и недоступна с другого домена.
+        </div>
+        <p class="ep-desc">Возвращает бинарный TS-сегмент HLS потока. Вызывается автоматически плеером при воспроизведении <code>.m3u8</code> плейлиста.</p>
+        <div class="section-label">Path parameters</div>
+        <table class="params-table">
+          <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td>segmentName</td><td><span class="type-pill">string</span></td><td><span class="req">*</span></td><td>Имя сегмента без расширения, напр. <code>output_3</code></td></tr>
+        </table>
+        <div class="section-label">Responses</div>
+        <div class="resp-row">
+          <span class="resp-code r200">200 OK — video/mp2t (binary)</span>
+          <span class="resp-code r404">404 Segment not found</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-post">POST</span>
+        <span class="ep-path">/conference/{conferenceId}/join</span>
+        <span class="new-badge">NEW</span>
+        <span class="ep-summary">Параметры для браузерного подключения (WebRTC)</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <div class="info-note">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#378ADD" stroke-width="1.5"/><line x1="8" y1="7" x2="8" y2="11" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r="0.8" fill="#378ADD"/></svg>
+          Новый API. Заменяет <code>GET /smc_public/DataConferenceJoin/DataConferenceJoin.html</code> который возвращает HTML страницу Huawei и перенаправляет пользователя на чужой сайт.
+        </div>
+        <p class="ep-desc">Возвращает параметры для WebRTC подключения к конференции прямо из браузера. Участник передаёт видео и аудио со своего устройства в ВКС Huawei без установки приложений и без перехода на сайт Huawei. Для подключения используйте <code>sdp_offer_endpoint</code> и <code>ice_servers</code> из ответа.</p>
+        <div class="section-label">Request body</div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button><span class="json-key">{</span>
+  <span class="json-key">"name"</span>: <span class="json-str">"Иванов Иван Иванович"</span>,
+  <span class="json-key">"role"</span>: <span class="json-str">"guest"</span> <span class="json-comment">// guest | chairman</span>
+<span class="json-key">}</span></div>
+        <div class="section-label">Parameters</div>
+        <table class="params-table">
+          <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td>name</td><td><span class="type-pill">string</span></td><td><span class="req">*</span></td><td>Отображаемое имя участника в конференции</td></tr>
+          <tr><td>role</td><td><span class="type-pill">enum</span></td><td><span class="req">*</span></td><td><code>guest</code> — обычный участник, <code>chairman</code> — председатель</td></tr>
+        </table>
+        <div class="section-label">Response 200</div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button><span class="json-key">{</span>
+  <span class="json-key">"webrtc_url"</span>: <span class="json-str">"wss://smc.sud.uz/webrtc"</span>,
+  <span class="json-key">"sdp_offer_endpoint"</span>: <span class="json-str">"wss://smc.sud.uz/webrtc/3c33b694-ee6a-4034-8715-2746d818b352"</span>,
+  <span class="json-key">"join_token"</span>: <span class="json-str">"eyJhbGciOiJIUzI1NiJ9.eyJjb25mSWQiOiIzYzMzYjY5NCIsIm5hbWUiOiLQmNCy0LDQvdC-0LIg0JjQstCw0L0iLCJyb2xlIjoiZ3Vlc3QifQ.xyz"</span>,
+  <span class="json-key">"ice_servers"</span>: [
+    <span class="json-key">{</span> <span class="json-key">"urls"</span>: <span class="json-str">"stun:stun.sud.uz:3478"</span> <span class="json-key">}</span>,
+    <span class="json-key">{</span>
+      <span class="json-key">"urls"</span>: <span class="json-str">"turn:turn.sud.uz:3478"</span>,
+      <span class="json-key">"username"</span>: <span class="json-str">"conf_3c33b694"</span>,
+      <span class="json-key">"credential"</span>: <span class="json-str">"temp_cred_abc123"</span>
+    <span class="json-key">}</span>
+  ],
+  <span class="json-key">"expiresAt"</span>: <span class="json-str">"2024-11-08T12:30:00Z"</span>
+<span class="json-key">}</span></div>
+        <div class="section-label">Responses</div>
+        <div class="resp-row">
+          <span class="resp-code r200">200 OK</span>
+          <span class="resp-code r404">404 Conference not active</span>
+          <span class="resp-code r401">401 Unauthorized</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-ws">WS</span>
+        <span class="ep-path">wss://smc.sud.uz/webrtc/{conferenceId}</span>
+        <span class="new-badge">NEW</span>
+        <span class="ep-summary">WebRTC signaling — SDP обмен</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <div class="info-note">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#378ADD" stroke-width="1.5"/><line x1="8" y1="7" x2="8" y2="11" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r="0.8" fill="#378ADD"/></svg>
+          Новый API. WebSocket endpoint для SDP обмена и ICE negotiation. После завершения signaling медиапоток идёт напрямую через DTLS/SRTP — минуя сервер.
+        </div>
+        <p class="ep-desc">Браузер устанавливает WebSocket соединение используя <code>sdp_offer_endpoint</code> и <code>join_token</code> из <code>POST /conference/{id}/join</code>, передаёт SDP offer и получает SDP answer от MCU Huawei.</p>
+        <div class="section-label">Client → Server (SDP offer)</div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button><span class="json-key">{</span>
+  <span class="json-key">"type"</span>: <span class="json-str">"offer"</span>,
+  <span class="json-key">"join_token"</span>: <span class="json-str">"eyJhbGciOiJIUzI1NiJ9..."</span>,
+  <span class="json-key">"sdp"</span>: <span class="json-str">"v=0\r\no=- 123456789 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0 1\r\nm=audio 9 UDP/TLS/RTP/SAVPF 111\r\n..."</span>
+<span class="json-key">}</span></div>
+        <div class="section-label">Server → Client (SDP answer)</div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button><span class="json-key">{</span>
+  <span class="json-key">"type"</span>: <span class="json-str">"answer"</span>,
+  <span class="json-key">"sdp"</span>: <span class="json-str">"v=0\r\no=- 987654321 2 IN IP4 192.168.1.100\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0 1\r\nm=audio 9 UDP/TLS/RTP/SAVPF 111\r\n..."</span>
+<span class="json-key">}</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════ RECORDING ══════ -->
+<div class="tag-section" style="border-bottom:none">
+  <div class="tag-header" onclick="toggleTag(this)">
+    <div class="tag-dot dot-rse"></div>
+    Recording (RSE8800A)
+    <span class="tag-desc">— записи конференций</span>
+    <span class="tag-chevron open">▶</span>
+  </div>
+  <div class="tag-body open">
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-get">GET</span>
+        <span class="ep-path">/conf-portal/conferences/external/recordAddress/{id}</span>
+        <span class="ep-summary">Список адресов записей конференции</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <p class="ep-desc">Возвращает список записей завершённой конференции. Каждая запись содержит <code>ticket</code> (TTL 3 минуты) и <code>addressItem</code> — URL для скачивания через RSE. Ticket необходимо использовать немедленно.</p>
+        <div class="section-label">Path parameters</div>
+        <table class="params-table">
+          <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td>id</td><td><span class="type-pill">string (uuid)</span></td><td><span class="req">*</span></td><td>ID конференции в SMC</td></tr>
+        </table>
+        <div class="section-label">Response 200</div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button><span class="json-key">{</span>
+  <span class="json-key">"subject"</span>: <span class="json-str">"Судебное заседание №2024-1234"</span>,
+  <span class="json-key">"recordAddresses"</span>: [
+    <span class="json-key">{</span>
+      <span class="json-key">"ticket"</span>: <span class="json-str">"f8fac1d4e484c0105d97cc0cbf7d4d323b84996c0137acef05add499eca551d0"</span>,
+      <span class="json-key">"addressItem"</span>: <span class="json-str">"https://rse1.sud.uz/...?recordId=c8067816-167a-4d4f-97f6-6e97d8ee6ea6"</span>
+    <span class="json-key">}</span>
+  ]
+<span class="json-key">}</span></div>
+        <div class="section-label">Responses</div>
+        <div class="resp-row">
+          <span class="resp-code r200">200 OK</span>
+          <span class="resp-code r404">404 No records found</span>
+          <span class="resp-code r401">401 Unauthorized</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-get">GET</span>
+        <span class="ep-path">/rse/rest/bnms/download/limit/3rdParty/downloadMedia</span>
+        <span class="ep-summary">Скачать файл записи (.ts)</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <p class="ep-desc">Скачивает файл записи с RSE сервера. Требует <code>ticket</code> полученный из <code>/recordAddress</code>. Ticket действует 3 минуты — необходимо инициировать скачивание сразу после получения.</p>
+        <div class="section-label">Query parameters</div>
+        <table class="params-table">
+          <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td>confId</td><td><span class="type-pill">string (uuid)</span></td><td><span class="req">*</span></td><td>ID конференции</td></tr>
+          <tr><td>recordId</td><td><span class="type-pill">string (uuid)</span></td><td><span class="req">*</span></td><td>ID файла записи</td></tr>
+          <tr><td>mediaType</td><td><span class="type-pill">enum</span></td><td><span class="req">*</span></td><td><code>videoHD</code> | <code>videoSD</code> | <code>videoAux</code></td></tr>
+          <tr><td>ticket</td><td><span class="type-pill">string</span></td><td><span class="req">*</span></td><td>Ticket из /recordAddress. TTL: 3 минуты</td></tr>
+        </table>
+        <div class="section-label">Responses</div>
+        <div class="resp-row">
+          <span class="resp-code r200">200 OK — video/mp2t (binary .ts)</span>
+          <span class="resp-code r400">400 Ticket expired or invalid</span>
+          <span class="resp-code r401">401 Unauthorized</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="ep-bar" onclick="toggleEp(this)">
+        <span class="method m-get">GET</span>
+        <span class="ep-path">/rse/sdk/rest/vod/getrecordinfo</span>
+        <span class="ep-summary">Получить m3u8 адрес для воспроизведения</span>
+        <span class="ep-chevron">▶</span>
+      </div>
+      <div class="ep-detail">
+        <p class="ep-desc">Возвращает адреса потоков для воспроизведения записи. Авторизация по JWT — без cookie RSE сессии.</p>
+        <div class="section-label">Query parameters</div>
+        <table class="params-table">
+          <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          <tr><td>ticket</td><td><span class="type-pill">string</span></td><td><span class="req">*</span></td><td>Ticket из /recordAddress</td></tr>
+          <tr><td>recordId</td><td><span class="type-pill">string (uuid)</span></td><td><span class="req">*</span></td><td>ID записи</td></tr>
+        </table>
+        <div class="section-label">Response 200</div>
+        <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">copy</button><span class="json-key">{</span>
+  <span class="json-key">"resultCode"</span>: <span class="json-num">0</span>,
+  <span class="json-key">"viewInfo"</span>: [
+    <span class="json-key">{</span>
+      <span class="json-key">"mainStreamHdUrl"</span>: <span class="json-str">"/play/typeOne/video/resource/987ff417-8dc7-4377-8960-2e1f534b0f5e/videoHD/0_0.m3u8"</span>,
+      <span class="json-key">"mainStreamSdUrl"</span>: <span class="json-str">"/play/typeOne/video/resource/987ff417-8dc7-4377-8960-2e1f534b0f5e/videoSD/0_0.m3u8"</span>,
+      <span class="json-key">"subStreamUrl"</span>: <span class="json-str">"/play/typeOne/video/resource/987ff417-8dc7-4377-8960-2e1f534b0f5e/videoAux/0_0.m3u8"</span>
+    <span class="json-key">}</span>
+  ]
+<span class="json-key">}</span></div>
+        <div class="section-label">Responses</div>
+        <div class="resp-row">
+          <span class="resp-code r200">200 OK</span>
+          <span class="resp-code r400">400 Invalid ticket</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+function toggleTag(h){
+  var b=h.nextElementSibling,ch=h.querySelector('.tag-chevron'),open=b.classList.contains('open');
+  b.classList.toggle('open',!open);
+  ch.classList.toggle('open',!open);
+}
+function toggleEp(b){
+  var d=b.nextElementSibling,ch=b.querySelector('.ep-chevron'),open=d.classList.contains('open');
+  d.classList.toggle('open',!open);
+  ch.classList.toggle('open',!open);
+}
+function copyCode(btn){
+  var block=btn.parentElement;
+  var text=block.innerText.replace('copy\n','').replace('copy','').trim();
+  navigator.clipboard.writeText(text).then(function(){
+    btn.textContent='copied';
+    setTimeout(function(){btn.textContent='copy'},1500);
+  });
+}
+</script>
+</body>
+</html>
